@@ -8,8 +8,9 @@ import {
 import { useOrderCloudContext } from "@rwatt451/ordercloud-react";
 import { FC, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import LoginModal from "../components/Login/LoginModal";
+// import LoginModal from "../components/Login/LoginModal";
 import MainMenu from "./MainMenu";
+import LoginModal from "../components/Authentication/LoginModal";
 
 const Layout: FC = () => {
   const { pathname } = useLocation();
