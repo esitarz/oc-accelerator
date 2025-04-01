@@ -1,8 +1,8 @@
 import { LineItem } from 'ordercloud-javascript-sdk'
 import { FunctionComponent } from 'react'
-import OcLineItemList from './OcLineItemList'
+import OcLineItemList from './cart/CartLineItemList'
 
-interface OcCurrentOrderLineItemListProps {
+interface CheckoutCurrentOrderLineItemListProps {
   emptyMessage?: string;
   editable?: boolean;
   productType?: string;
@@ -10,7 +10,7 @@ interface OcCurrentOrderLineItemListProps {
   onChange: (newLineItem: LineItem) => void;
 }
 
-const OcCurrentOrderLineItemList: FunctionComponent<OcCurrentOrderLineItemListProps> = ({
+const CheckoutCurrentOrderLineItemList: FunctionComponent<CheckoutCurrentOrderLineItemListProps> = ({
   emptyMessage,
   editable,
   productType,
@@ -34,4 +34,4 @@ const OcCurrentOrderLineItemList: FunctionComponent<OcCurrentOrderLineItemListPr
   )
 }
 
-export default OcCurrentOrderLineItemList
+export default CheckoutCurrentOrderLineItemList

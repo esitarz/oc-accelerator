@@ -14,7 +14,7 @@ import {
 import { PriceSchedule, BuyerProduct } from "ordercloud-javascript-sdk";
 import { useOcResourceGet } from "@ordercloud/react-sdk";
 
-interface OcQuantityInputProps {
+interface CartQuantityInputProps {
   controlId: string;
   priceSchedule?: PriceSchedule;
   productId?: string;
@@ -24,7 +24,7 @@ interface OcQuantityInputProps {
   onChange: (quantity: number) => void;
 }
 
-const OcQuantityInput: FunctionComponent<OcQuantityInputProps> = ({
+const CartQuantityInput: FunctionComponent<CartQuantityInputProps> = ({
   controlId,
   productId,
   priceSchedule,
@@ -99,4 +99,4 @@ const OcQuantityInput: FunctionComponent<OcQuantityInputProps> = ({
   ) : null;
 };
 
-export default OcQuantityInput;
+export default CartQuantityInput;

@@ -15,8 +15,8 @@ import { useShopper } from "@ordercloud/react-sdk";
 import { LineItem } from "ordercloud-javascript-sdk";
 import React, { FormEvent, useCallback, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import OcCurrentOrderLineItemList from "./OcCurrentOrderLineItemList";
-import { TABS } from "./ShoppingCart";
+import OcCurrentOrderLineItemList from "../CheckoutCurrentOrderLineItemList";
+import { TABS } from "../Checkout";
 
 interface CartSummaryProps {
   onSubmitOrder: () => void;

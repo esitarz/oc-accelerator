@@ -1,18 +1,21 @@
+import { useToast } from "@chakra-ui/react";
+import {
+  IOrderCloudErrorContext,
+  OrderCloudProvider,
+} from "@ordercloud/react-sdk";
+import { OrderCloudError } from "ordercloud-javascript-sdk";
 import { FC, useCallback } from "react";
-import routes from "./routes";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { IOrderCloudErrorContext, OrderCloudProvider } from "@ordercloud/react-sdk";
+import GlobalLoadingIndicator from "./components/shared/LoadingIndicator";
+import { BASE_API_URL } from "./constants/api.constants";
+import { IS_AUTO_APPLY } from "./constants/app.constants";
 import {
   ALLOW_ANONYMOUS,
-  BASE_API_URL,
   CLIENT_ID,
   CUSTOM_SCOPE,
   SCOPE,
-  IS_AUTO_APPLY
-} from "./constants";
-import { useToast } from "@chakra-ui/react";
-import { OrderCloudError } from "ordercloud-javascript-sdk";
-import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator";
+} from "./constants/auth.constants";
+import routes from "./routes";
 
 const basename = import.meta.env.VITE_APP_CONFIG_BASE;
 
@@ -21,15 +24,22 @@ const router = createBrowserRouter(routes, { basename });
 const AppProvider: FC = () => {
   const toast = useToast();
 
-  const defaultErrorHandler = useCallback((error: OrderCloudError, {logout}:IOrderCloudErrorContext) => {
-    if (error.status === 401) {
-      console.log('DEFAULT ERROR HANDLER', 401)
-      return logout()
-    }
-    if (!toast.isActive(error.errorCode)) {
-      toast({ id: error.errorCode, title: error.status === 403 ? 'Permission denied' : error.message, status: "error" });
-    }
-  }, [toast])
+  const defaultErrorHandler = useCallback(
+    (error: OrderCloudError, { logout }: IOrderCloudErrorContext) => {
+      if (error.status === 401) {
+        console.log("DEFAULT ERROR HANDLER", 401);
+        return logout();
+      }
+      if (!toast.isActive(error.errorCode)) {
+        toast({
+          id: error.errorCode,
+          title: error.status === 403 ? "Permission denied" : error.message,
+          status: "error",
+        });
+      }
+    },
+    [toast]
+  );
 
   return (
     <OrderCloudProvider
@@ -42,7 +52,7 @@ const AppProvider: FC = () => {
       defaultErrorHandler={defaultErrorHandler}
     >
       <RouterProvider router={router} />
-      <GlobalLoadingIndicator/>
+      <GlobalLoadingIndicator />
     </OrderCloudProvider>
   );
 };

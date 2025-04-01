@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { ListFacet } from "ordercloud-javascript-sdk";
 import { FunctionComponent } from "react";
-import FacetListValue from "./FacetListValues";
+import FacetListValue from "./ProductFacetListValues";
 
-interface FacetListProps {
+interface ProductFacetListProps {
   facets: ListFacet[] | undefined;
   onChange: (
     queryKey: string,
@@ -20,8 +20,10 @@ interface FacetListProps {
   ) => (value?: string | boolean | number) => void;
 }
 
-const FacetList: FunctionComponent<FacetListProps> = ({ facets, onChange }) => {
-
+const ProductFacetList: FunctionComponent<ProductFacetListProps> = ({
+  facets,
+  onChange,
+}) => {
   return (
     <>
       {facets && (
@@ -32,15 +34,14 @@ const FacetList: FunctionComponent<FacetListProps> = ({ facets, onChange }) => {
           {facets?.map((f: ListFacet) => {
             return (
               <AccordionItem border="none" key={f.Name} w="full">
-                  <AccordionButton>
-                    <Heading as="h3" size="sm" flex="1" textAlign="left"
-                    >
-                      {f.Name}
-                    </Heading>
-                    <AccordionIcon />
-                  </AccordionButton>
+                <AccordionButton>
+                  <Heading as="h3" size="sm" flex="1" textAlign="left">
+                    {f.Name}
+                  </Heading>
+                  <AccordionIcon />
+                </AccordionButton>
                 <AccordionPanel as={VStack} alignItems="stretch">
-                    <FacetListValue facetList={f} onChange={onChange} />
+                  <FacetListValue facetList={f} onChange={onChange} />
                 </AccordionPanel>
               </AccordionItem>
             );
@@ -51,4 +52,4 @@ const FacetList: FunctionComponent<FacetListProps> = ({ facets, onChange }) => {
   );
 };
 
-export default FacetList;
+export default ProductFacetList;

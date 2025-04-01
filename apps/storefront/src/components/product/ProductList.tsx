@@ -30,7 +30,7 @@ import Pagination from "../shared/pagination/Pagination";
 import FilterSearchMenu, {
   ServiceListOptions,
 } from "../shared/search/SearchMenu";
-import FacetList from "./facets/FacetList";
+import FacetList from "./product-facets/ProductFacetList";
 import ProductCard from "./ProductCard";
 import { useOcResourceListWithFacets } from "@ordercloud/react-sdk";
 

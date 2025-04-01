@@ -21,15 +21,15 @@ import {
 import pluralize from "pluralize";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IS_MULTI_LOCATION_INVENTORY } from "../../constants";
-import formatPrice from "../../utils/formatPrice";
-import OcQuantityInput from "../cart/OcQuantityInput";
-import ProductImageGallery from "./product-detail/ProductImageGallery";
+import OcQuantityInput from "../../checkout/cart/CartQuantityInput";
+import ProductImageGallery from ".././product-detail/ProductImageGallery";
 import {
   useOcResourceGet,
   useOcResourceList,
   useShopper,
 } from "@ordercloud/react-sdk";
+import formatPrice from "../../../utils/formatPrice";
+import { IS_MULTI_LOCATION_INVENTORY } from "../../../constants/app.constants";
 
 export interface ProductDetailProps {
   productId: string;
@@ -127,7 +127,15 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
         });
       }
     }
-  }, [product, activeRecordId, productId, toast, addCartLineItem, quantity, navigate]);
+  }, [
+    product,
+    activeRecordId,
+    productId,
+    toast,
+    addCartLineItem,
+    quantity,
+    navigate,
+  ]);
 
   return loading ? (
     <Center h="50vh">

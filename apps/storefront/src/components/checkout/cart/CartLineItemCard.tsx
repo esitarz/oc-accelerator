@@ -26,18 +26,18 @@ import React, {
 } from "react";
 import { TbPhoto } from "react-icons/tb";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import useDebounce from "../../hooks/useDebounce";
-import formatPrice from "../../utils/formatPrice";
-import OcQuantityInput from "./OcQuantityInput";
+import useDebounce from "../../../hooks/useDebounce";
+import formatPrice from "../../../utils/formatPrice";
+import OcQuantityInput from "./CartQuantityInput";
 import { useShopper } from "@ordercloud/react-sdk";
 
-interface OcLineItemCardProps {
+interface CartLineItemCardProps {
   lineItem: LineItem;
   editable?: boolean;
   onChange?: (newLi: LineItem) => void;
 }
 
-const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({
+const CartLineItemCard: FunctionComponent<CartLineItemCardProps> = ({
   lineItem,
   editable,
   onChange,
@@ -237,4 +237,4 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({
   );
 };
 
-export default OcLineItemCard;
+export default CartLineItemCard;

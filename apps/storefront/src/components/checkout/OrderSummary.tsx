@@ -10,8 +10,8 @@ import {
 import { LineItem, Order, RequiredDeep } from "ordercloud-javascript-sdk";
 import React, { useCallback } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import OcCurrentOrderLineItemList from "./OcCurrentOrderLineItemList";
 import { useOrderCloudContext } from "@ordercloud/react-sdk";
+import CartCurrentOrderLineItemList from "./CheckoutCurrentOrderLineItemList";
 
 interface OrderSummaryProps {
   order: RequiredDeep<Order>;
@@ -60,7 +60,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({ order, lineItems }) => {
           </Button>
         )}
       </ButtonGroup>
-      <OcCurrentOrderLineItemList
+      <CartCurrentOrderLineItemList
         lineItems={lineItems}
         emptyMessage=""
         onChange={handleLineItemChange}

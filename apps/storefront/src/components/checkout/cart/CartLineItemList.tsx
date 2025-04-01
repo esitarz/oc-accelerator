@@ -1,7 +1,7 @@
 import { Card, CardBody, Text, VStack } from "@chakra-ui/react";
 import { LineItem } from "ordercloud-javascript-sdk";
 import { FunctionComponent } from "react";
-import OcLineItemCard from "./OcLineItemCard";
+import OcLineItemCard from "./CartLineItemCard";
 
 interface OcLineItemListProps {
   emptyMessage?: string;

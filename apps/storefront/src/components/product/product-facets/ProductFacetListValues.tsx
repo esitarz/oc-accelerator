@@ -8,7 +8,7 @@ import {
 import { ListFacet, ListFacetValue } from "ordercloud-javascript-sdk";
 import { useSearchParams } from "react-router-dom";
 
-interface FacetListValuesProps {
+interface ProductFacetListValuesProps {
   facetList: ListFacet | undefined;
   onChange: (
     queryKey: string,
@@ -17,7 +17,7 @@ interface FacetListValuesProps {
   ) => (value?: string | boolean | number) => void;
 }
 
-const FacetListValues: FunctionComponent<FacetListValuesProps> = ({
+const ProductFacetListValues: FunctionComponent<ProductFacetListValuesProps> = ({
   facetList,
   onChange,
 }) => {
@@ -45,11 +45,14 @@ const FacetListValues: FunctionComponent<FacetListValuesProps> = ({
           isChecked={checkedItems[idx]}
           onChange={() => onChange(`xp.${facetList.XpPath}`, true)(v.Value)}
         >
-          {v.Value} <Text as="span" color="chakra-placeholder-color">({v?.Count})</Text>
+          {v.Value}{" "}
+          <Text as="span" color="chakra-placeholder-color">
+            ({v?.Count})
+          </Text>
         </Checkbox>
       ))}
     </>
   );
 };
 
-export default FacetListValues;
+export default ProductFacetListValues;

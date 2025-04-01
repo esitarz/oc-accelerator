@@ -1,11 +1,11 @@
 import { RouteObject } from "react-router-dom";
-import Layout from "./Layout/Layout";
-import Dashboard from './components/Dashboard';
-import OrderConfirmation from "./components/cart/OrderConfirmation";
-import { ShoppingCart } from "./components/cart/ShoppingCart";
 import CategoryList from "./components/category/CategoryList";
-import ProductDetailWrapper from "./components/product/ProductDetailWrapper";
+import { Checkout } from "./components/checkout/Checkout";
+import OrderConfirmation from "./components/checkout/OrderConfirmation";
 import ProductList from "./components/product/ProductList";
+import ProductDetailWrapper from "./components/product/product-detail/ProductDetailWrapper";
+import Dashboard from './layout/Dashboard';
+import Layout from "./layout/Layout";
 
 const routes: RouteObject[] = [
   {
@@ -18,7 +18,7 @@ const routes: RouteObject[] = [
       },
       {
         path: "/cart",
-        element: <ShoppingCart />,
+        element: <Checkout />,
       },
 
       {

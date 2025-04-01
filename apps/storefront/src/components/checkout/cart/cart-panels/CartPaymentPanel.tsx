@@ -1,10 +1,11 @@
 import { Button } from "@chakra-ui/react";
 import { useMemo } from "react";
-import { PAYMENT_PROVIDER, PAYMENT_PROVIDERS } from "../../../constants";
-import { BlueSnap } from "../Payment/BlueSnap";
-import { CardConnect } from "../Payment/CardConnect";
-import { PayPal } from "../Payment/PayPal";
-import { Stripe } from "../Payment/Stripe";
+import { PAYMENT_PROVIDER, PAYMENT_PROVIDERS } from "../../../../constants/payment.constants";
+import { BlueSnap } from "../payment/PaymentBlueSnap";
+import { CardConnect } from "../payment/PaymentCardConnect";
+import { PayPal } from "../payment/PaymentPayPal";
+import { Stripe } from "../payment/PaymentStripe";
+
 
 type CartPaymentPanelProps = {
   submitOrder: () => void;
