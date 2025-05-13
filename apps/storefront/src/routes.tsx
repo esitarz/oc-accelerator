@@ -17,6 +17,10 @@ const routes: RouteObject[] = [
         element: <Dashboard />,
       },
       {
+        path: "/shop-all",
+        element: <ProductList />,
+      },
+      {
         path: "/cart",
         element: <ShoppingCart />,
       },

@@ -144,7 +144,11 @@ const MainMenu: FC<MainMenuProps> = ({ loginDisclosure }) => {
               <DEFAULT_BRAND h="10" />
             )}
           </RouterLink>
-          <HStack as="nav" flexGrow="1" ml={3}>
+          <Button as={RouterLink} to={`/shop-all`} variant="ghost" mr="auto">
+            Shop all products
+          </Button>
+          ;
+          {/* <HStack as="nav" flexGrow="1" ml={3}>
             {categories.length > 0 && (
               <Button
                 isActive={megaMenuDisclosure.isOpen}
@@ -156,7 +160,7 @@ const MainMenu: FC<MainMenuProps> = ({ loginDisclosure }) => {
               </Button>
             )}
             {renderCatalogMenu()}
-          </HStack>
+          </HStack> */}
           <HStack>
             {isLoggedIn && (
               <Heading size="sm">
