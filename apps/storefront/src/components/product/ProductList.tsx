@@ -32,7 +32,7 @@ import {
 } from "@chakra-ui/react";
 import { BuyerProduct } from "ordercloud-javascript-sdk";
 import { parse } from "querystring";
-import React, { FunctionComponent, useCallback, useMemo, useState } from "react";
+import React, { FunctionComponent, useCallback, useMemo } from "react";
 import {
   useLocation,
   useNavigate,
@@ -49,6 +49,7 @@ import { useOcResourceListWithFacets } from "@ordercloud/react-sdk";
 import { GrFacebook } from "react-icons/gr";
 import { TbClipboard, TbClock, TbCoin, TbLink, TbMail, TbPhoto, TbTrash, TbUsers, TbUsersGroup } from "react-icons/tb";
 import GroupOrderModal, { GroupOrderData } from "./GroupOrderModal";
+import { useGroupOrder } from "../../context/GroupOrderContext";
 
 export interface ProductListProps {
   renderItem?: (product: BuyerProduct) => JSX.Element;
@@ -65,7 +66,7 @@ const ProductList: FunctionComponent<ProductListProps> = ({ renderItem }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isGroupOrderOpen, onOpen: onGroupOrderOpen, onClose: onGroupOrderClose } = useDisclosure();
 
-  const [groupOrder, setGroupOrder] = useState<GroupOrderData | null>(null);
+  const { groupOrder, setGroupOrder } = useGroupOrder();
   const toast = useToast();
 
   const searchTerm = useMemo(() => {
@@ -151,6 +152,14 @@ const ProductList: FunctionComponent<ProductListProps> = ({ renderItem }) => {
   const handleCreateGroupOrder = (groupOrderData: GroupOrderData) => {
     setGroupOrder(groupOrderData);
     onGroupOrderClose();
+    
+    toast({
+      title: "Group order created",
+      description: "Your group order has been created successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const handleCopyLink = () => {

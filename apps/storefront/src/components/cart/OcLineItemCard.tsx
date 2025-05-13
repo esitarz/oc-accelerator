@@ -15,6 +15,9 @@ import {
   Text,
   Textarea,
   VStack,
+  Badge,
+  Avatar,
+  Tooltip,
 } from "@chakra-ui/react";
 import { LineItem } from "ordercloud-javascript-sdk";
 import React, {
@@ -80,6 +83,9 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({
     return formatPrice(lineItem.UnitPrice);
   }, [lineItem]);
 
+  // Get the user who added this item if available
+  const addedByUser = lineItem?.xp?.addedBy;
+
   return (
     <>
       <HStack
@@ -102,7 +108,7 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({
                 rounded="md"
                 boxSize="full"
                 objectFit="cover"
-                src={lineItem?.Product?.xp?.Images[0].Url}
+                src={lineItem?.Product?.xp?.Images[0].PreviewUrl}
                 zIndex={1}
                 onError={(e) => {
                   e.currentTarget.src = ""; // Prevent the broken image from rendering
@@ -155,6 +161,22 @@ const OcLineItemCard: FunctionComponent<OcLineItemCardProps> = ({
               </Text>
             </React.Fragment>
           ))}
+          
+          {/* Display who added this item */}
+          {addedByUser && (
+            <HStack mt={-1} spacing={2} alignItems="center">
+              <Tooltip label={addedByUser.name}>
+                <Avatar 
+                  size="xs" 
+                  name={addedByUser.name} 
+                  src={addedByUser.avatar} 
+                />
+              </Tooltip>
+              <Text fontSize="xs" color="gray.600">
+                Added by: {addedByUser.email}
+              </Text>
+            </HStack>
+          )}
         </VStack>
         {editable ? (
           <VStack alignItems="flex-start">

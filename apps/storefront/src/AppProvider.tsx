@@ -13,6 +13,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import { OrderCloudError } from "ordercloud-javascript-sdk";
 import GlobalLoadingIndicator from "./components/GlobalLoadingIndicator";
+import { GroupOrderProvider } from "./context/GroupOrderContext";
 
 const basename = import.meta.env.VITE_APP_CONFIG_BASE;
 
@@ -44,8 +45,10 @@ const AppProvider: FC = () => {
       autoApplyPromotions={IS_AUTO_APPLY}
       defaultErrorHandler={defaultErrorHandler}
     >
-      <RouterProvider router={router} />
-      <GlobalLoadingIndicator/>
+      <GroupOrderProvider>
+        <RouterProvider router={router} />
+        <GlobalLoadingIndicator/>
+      </GroupOrderProvider>
     </OrderCloudProviderWithFix>
   );
 };

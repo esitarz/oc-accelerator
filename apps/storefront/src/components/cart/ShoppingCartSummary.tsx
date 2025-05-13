@@ -10,6 +10,16 @@ import {
   Text,
   VStack,
   useToast,
+  HStack,
+  Avatar,
+  AvatarGroup,
+  Icon,
+  IconButton,
+  Badge,
+  Box,
+  Card,
+  CardHeader,
+  CardBody,
 } from "@chakra-ui/react";
 import { useShopper } from "@ordercloud/react-sdk";
 import {
@@ -22,14 +32,17 @@ import React, { FormEvent, useCallback, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import OcCurrentOrderLineItemList from "./OcCurrentOrderLineItemList";
 import { TABS } from "./ShoppingCart";
+import { TbClipboard, TbClock, TbCoin, TbLink, TbMail, TbTrash, TbUsers, TbUsersGroup } from "react-icons/tb";
+import { useGroupOrder } from "../../context/GroupOrderContext";
 
 interface CartSummaryProps {
   order: RequiredDeep<Order>;
   lineItems: LineItem[];
   promotions?: OrderPromotion[];
-  onSubmitOrder: () => void;
   deleteOrder: () => void;
   tabIndex: number;
+  // Keep onSubmitOrder in the interface for future compatibility
+  onSubmitOrder?: () => void;
 }
 
 const CartSummary: React.FC<CartSummaryProps> = ({
@@ -41,40 +54,18 @@ const CartSummary: React.FC<CartSummaryProps> = ({
 }) => {
   const { addCartPromo, removeCartPromo } = useShopper();
   const [promoCode, setPromoCode] = useState<string>("");
+  
+  // Use the shared group order state
+  const { groupOrder, setGroupOrder, assignUsersToLineItems } = useGroupOrder();
+  const toast = useToast();
+  
+  // Assign mock users to line items for the demo using the shared function
+  const lineItemsWithUsers = assignUsersToLineItems(lineItems);
+  
   const handleLineItemChange = (newLi: LineItem) => {
     // Implement the logic to update the line item
     console.log("Line item updated:", newLi);
   };
-  const toast = useToast();
-  // TODO: tax blocked by work on .NET functions
-  // const [taxCost, setTaxCost] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchTaxCost = async () => {
-  //     const orderID = order?.ID;
-  //     if (!orderID) return;
-
-  //     try {
-  //       const response = await fetch(`/api/ordercalculate?orderID=${orderID}`);
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch tax cost");
-  //       }
-
-  //       const data = await response.json();
-  //       const taxCost = data?.TaxCost;
-
-  //       if (taxCost !== undefined) {
-  //         setTaxCost(taxCost);
-  //       } else {
-  //         console.warn("No tax cost found in response.");
-  //       }
-  //     } catch (err) {
-  //       console.error("Failed to fetch tax cost:", err);
-  //     }
-  //   };
-
-  //   fetchTaxCost();
-  // }, [order]);
 
   const handleApplyPromotion = useCallback(
     (e: FormEvent) => {
@@ -115,24 +106,137 @@ const CartSummary: React.FC<CartSummaryProps> = ({
     [removeCartPromo, toast]
   );
 
+  const handleCopyLink = () => {
+    if (groupOrder) {
+      navigator.clipboard.writeText(groupOrder.link);
+      toast({
+        title: "Link copied!",
+        description: "Group order link has been copied to clipboard.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleDeleteGroupOrder = () => {
+    setGroupOrder(null);
+    toast({
+      title: "Group order deleted",
+      status: "info",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  };
+
   return (
     <VStack align="stretch" spacing={6}>
-      <ButtonGroup alignSelf="flex-end" alignItems="center" gap={3} mt={-3}>
+      <ButtonGroup alignItems="center" gap={3} alignSelf="flex-end">
         <Button variant="link" size="xs" onClick={deleteOrder}>
           Clear cart
         </Button>
         <Button
           size="xs"
           variant="outline"
-          alignSelf="flex-end"
           as={RouterLink}
           to="/products"
         >
           Continue shopping
         </Button>
       </ButtonGroup>
+      
+      {/* Group Order Details - only show if exists */}
+      {groupOrder && (
+        <Card variant="outline" shadow="sm" mb={2}>
+          <CardHeader bg="gray.50" pb={2}>
+            <Flex justifyContent="space-between" alignItems="center">
+              <HStack>
+                <Icon as={TbUsersGroup} color="primary.500" boxSize="5" />
+                <Text fontWeight="bold">{groupOrder.name}</Text>
+                <Badge colorScheme="green" variant="subtle">Active</Badge>
+              </HStack>
+              <HStack>
+                <IconButton
+                  aria-label="Copy link"
+                  icon={<Icon as={TbClipboard} fontSize="sm" />}
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleCopyLink}
+                />
+                <IconButton
+                  aria-label="Delete group order"
+                  icon={<Icon as={TbTrash} fontSize="sm" />}
+                  size="sm"
+                  variant="ghost"
+                  colorScheme="red"
+                  onClick={handleDeleteGroupOrder}
+                />
+              </HStack>
+            </Flex>
+          </CardHeader>
+          <CardBody pt={3}>
+            <Stack spacing={3}>
+              <HStack fontSize="sm" color="gray.600">
+                <Icon as={TbClock} fontSize=".75rem" />
+                <Text>Created {formatDate(groupOrder.createdAt)}</Text>
+              </HStack>
+
+              <HStack fontSize="sm" color="gray.600">
+                <Icon
+                  fontSize=".75rem"
+                  as={groupOrder.sharingMethod === "link" ? TbLink : TbMail}
+                />
+                <Text>
+                  {groupOrder.sharingMethod === "link"
+                    ? "Shared via link"
+                    : `Invited ${groupOrder.emails.length} ${
+                        groupOrder.emails.length === 1 ? "person" : "people"
+                      } via email`}
+                </Text>
+              </HStack>
+
+              {groupOrder.hasBudgetLimit && (
+                <HStack fontSize="sm" color="gray.600">
+                  <Icon as={TbCoin} fontSize=".75rem" />
+                  <Text>Max ${groupOrder.budgetLimit} per person</Text>
+                </HStack>
+              )}
+
+              <Divider />
+
+              <Flex justifyContent="space-between" alignItems="center">
+                <HStack>
+                  <Icon as={TbUsers} fontSize=".75rem" />
+                  <Text fontSize="sm">Members ({groupOrder.members.length})</Text>
+                </HStack>
+                <AvatarGroup size="xs" max={3}>
+                  {groupOrder.members.map((member, idx) => (
+                    <Avatar 
+                      key={idx} 
+                      name={member.name} 
+                      src=""
+                      title={member.name}
+                    />
+                  ))}
+                </AvatarGroup>
+              </Flex>
+            </Stack>
+          </CardBody>
+        </Card>
+      )}
+      
       <OcCurrentOrderLineItemList
-        lineItems={lineItems}
+        lineItems={lineItemsWithUsers}
         emptyMessage="Your cart is empty"
         onChange={handleLineItemChange}
         editable={false}
@@ -157,7 +261,7 @@ const CartSummary: React.FC<CartSummaryProps> = ({
         </Flex>
       </form>
       {promotions?.map((p) => (
-        <Flex justify="space-between">
+        <Flex justify="space-between" key={p.Code}>
           <Text alignContent="center">{p.Code?.toLocaleUpperCase()}</Text>
           <Button
             colorScheme="danger"
